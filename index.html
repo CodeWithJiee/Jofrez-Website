@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jofrez Food House</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff6f2;
+      color: #333;
+    }
+
+    /* Navbar */
+    .menubar {
+      background-color: #9ac15b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 20px 40px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .left-side {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .left-side img {
+      height: 60px;
+      width: auto;
+      filter: drop-shadow(0 0 0 white) drop-shadow(0 0 2px white);
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #333;
+    }
+
+    .order-button {
+      background-color: #e6572c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .order-button:hover {
+      background-color: #c64823;
+    }
+
+    /* Hero section */
+    .mainContent {
+      margin-top: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .image-wrapper {
+      position: relative;
+      width: 100%;
+      max-height: 500px;
+      overflow: hidden;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      object-fit: cover;
+      height: 100%;
+      display: block;
+      filter: brightness(0.8);
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      opacity: .1;
+      pointer-events: none;
+    }
+
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      z-index: 2;
+      padding: 20px;
+    }
+
+    .hero-text h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hero-text p {
+      font-size: 18px;
+    }
+
+    /* Image grid */
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .image-grid img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .image-grid img:hover {
+      transform: scale(1.03);
+    }
+
+    /* Menu section */
+    .menu-section {
+      padding: 40px 20px;
+      background-color: #fff;
+      max-width: 1920px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .menu-section h1,
+    .menu-section h2 {
+      color: #e6572c;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .menu-items {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .menu-item {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .menu-item h3 {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .menu-item p {
+      color: #666;
+      font-size: 15px;
+    }
+
+    /* Info section */
+    .info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      background-color: #f9f9f9;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 40px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .info h3 {
+      margin-bottom: 10px;
+      color: #e6572c;
+      font-size: 18px;
+    }
+
+    .info p, .info a {
+      font-size: 15px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .info a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .menubar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+        
+      }
+
+      .hamburger {
+        display: block;
+        margin-left: 150px ;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #9ac15b;
+        padding: 10px 0;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .order-button {
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .hero-text h1 {
+
+        font-size: 24px;
+        margin-top: 5px;
+        width: 300px;
+      }
+
+      .hero-text p {
+        font-size: 14px;
+      }
+
+      .menu-section h1,
+      .menu-section h2 {
+        font-size: 22px;
+      }
+
+      .menu-item h3 {
+        font-size: 16px;
+      }
+
+      .menu-item p {
+        font-size: 14px;
+      }
+
+      .footer {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <div class="menubar">
+    <div class="left-side">
+      <img src="TEXT LOGO.png" alt="Jofrez Logo" />
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#menu">MENU</a>
+      <a href="#gallery">GALLERY</a>
+    </div>
+
+    <a href="#" class="order-button">ORDER NOW</a>
+  </div>
+
+  <!-- Hero -->
+  <div class="mainContent">
+    <div class="image-wrapper">
+      <img src="OUTSIDE.png" alt="Jofrez">
+      <div class="overlay"></div>
+      <div class="hero-text">
+        <h1>Welcome to Jofrez Food House</h1>
+        <p>Serving freshly cooked Filipino meals, 24/7 in Navotas. Come hungry, leave happy!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="image-grid" id="gallery">
+    <img src="7.png" alt="Dish 1">
+    <img src="8.png" alt="Dish 2">
+    <img src="10.png" alt="Dish 3">
+    <img src="11.png" alt="Dish 4">
+    <img src="12.png" alt="Dish 5">
+    <img src="9.png" alt="Dish 6">
+  </div>
+
+  <!-- Menu Section -->
+  <div id="menu" class="menu-section">
+    <h1>Our Menu</h1>
+    <div class="menu-items">
+      <div class="menu-item">
+  <h2>🍲 Main Dishes (Good for 2 to 3 persons)</h2>
+
+  <h3>Papaitan</h3>
+  <p>Ilocano-style bitter beef innards soup — bold and comforting. – ₱110</p>
+
+  <h3>Pork Dinakdakan</h3>
+  <p>Grilled pork with creamy calamansi-mayo dressing — smoky and tangy. – ₱120</p>
+
+  <h3>Chicken Dinakdakan</h3>
+  <p>Tender grilled chicken bits with a zesty creamy kick. – ₱120</p>
+
+  <h3>Bangus Dinakdakan</h3>
+  <p>Crispy bangus flakes in a tangy Ilocano-style blend. – ₱120</p>
+
+  <h3>Tokwa’t Baboy</h3>
+  <p>Crunchy tofu and pork belly in vinegar-soy sauce mix — a Filipino classic. – ₱160</p>
+
+  <h3>Chopsuey</h3>
+  <p>Mixed stir-fried veggies with meat — colorful, saucy, and healthy. – ₱170</p>
+
+  <h3>Sweet & Sour Fish Fillet</h3>
+  <p>Golden fish fillet coated in a sweet and tangy glaze. – ₱170</p>
+
+  <h3>Sweet & Sour Pork</h3>
+  <p>Crispy pork chunks in bright sweet & sour sauce — a crowd favorite. – ₱170</p>
+
+  <h3>Beef w/ Mushroom</h3>
+  <p>Savory beef slices with earthy mushrooms in rich gravy. – ₱190</p>
+
+  <h3>Beef w/ Young Corn</h3>
+  <p>Beef stir-fry with crunchy baby corn — tasty and tender. – ₱190</p>
+
+  <h3>Beef w/ Broccoli</h3>
+  <p>Classic Chinese-style beef with crisp broccoli in soy sauce. – ₱190</p>
+
+  <h3>Sinigang na Liempo</h3>
+  <p>Pork belly in sour tamarind broth — hearty and comforting. – ₱190</p>
+
+  <h3>Sinigang na Manok</h3>
+  <p>Chicken stewed in tangy sinigang soup — light but flavorful. – ₱190</p>
+
+  <h3>Salmon Belly w/ Black Beans</h3>
+  <p>Savory salmon belly sautéed in rich black bean sauce. – ₱200</p>
+
+  <h3>Sinigang na Ulo ng Salmon</h3>
+  <p>Salmon head in hot and sour broth — rich in taste and nutrients. – ₱200</p>
+
+  <h3>Sinigang na Salmon Belly</h3>
+  <p>Tender salmon belly in classic sinigang broth — rich and tangy. – ₱210</p>
+
+  <h3>Sinigang na Baka</h3>
+  <p>Beef in a flavorful sour tamarind soup — bold and warming. – ₱210</p>
+
+  <h3>Nilagang Baka</h3>
+  <p>Boiled beef with cabbage and potatoes — clear broth, full flavor. – ₱210</p>
+
+  <h3>Beef Kare-Kare</h3>
+  <p>Traditional peanut-based stew with tender beef and veggies. – ₱210</p>
+
+  <h3>Sinigang na Hipon</h3>
+  <p>Shrimp in tangy sinigang broth — light, fresh, and delicious. – ₱210</p>
+
+  <h3>Bulalo</h3>
+  <p>Slow-cooked beef shank with bone marrow — rich, warm, and comforting. – ₱220</p>
+</div>
+
+  
+      
+      <div class="menu-item">
+      <h2>Sizzling Meals @ ₱150</h2>
+      
+      <h3>Sizzling Hotdog</h3>
+      <p>Sizzling juicy hotdogs with sweet-spicy glaze — a kid favorite!</p>
+
+      <h3>Sizzling Pork Sisig</h3>
+      <p>Crispy chopped pork on a sizzling plate with that perfect kick of calamansi & chili.</p>
+
+      <h3>Sizzling Chicken Sisig</h3>
+      <p>Tender, tangy chicken bits — a lighter twist to the classic sisig.</p>
+
+      <h3>Sizzling Beef Sisig</h3>
+      <p>Beefy, smoky, and sizzling with bold flavors — topped with onion crunch!</p>
+
+      <h3>Sizzling Burger Steak</h3>
+      <p>Thick burger patties smothered in savory mushroom gravy — with sizzling rice.</p>
+
+      <h3>Sizzling Beef Steak</h3>
+      <p>Tender beef strips with onion and soy-calamansi sauce, sizzling to perfection.</p>
+
+      <h3>Sizzling Beef Caldereta</h3>
+      <p>Beef chunks in rich caldereta sauce — sizzling, saucy, and satisfying.5</p>
+
+      <h3>Sizzling Chicken</h3>
+      <p>Crispy or grilled chicken fillet with gravy — still crackling when it hits your table.</p>
+
+
+      <h3>Sizzling Pork Sisig</h3>
+      <p>Crispy or grilled chicken fillet with gravy — still crackling when it hits your table.</p>
+      
+      <h3>Sizzling Chickenn Curry</h3>
+      <p>Creamy, mildly spiced chicken curry sizzling with Filipino flair.</p>
+      
+      <h3>Sizzling Pork</h3>
+      <p>Classic pork cuts cooked on a blazing hot plate — juicy and bold.</p>
+
+      <h3>Sizzling Pusit</h3>
+      <p>Tender squid rings with tangy soy sauce blend, sizzling hot with flavor.</p>
+
+      <h3>Sizzling Tofu</h3>
+      <p>Crispy tofu cubes in creamy, spicy sauce — meatless but mind-blowing.</p>
+
+      <h3>Sizzling Bicol Express</h3>
+      <p>Pork simmered in spicy coconut sauce — extra kick on a sizzling plate!</p>
+
+      <h3>Sizzling Mushroom</h3>
+      <p>Savory, buttery mushrooms sizzling hot — a flavor-packed veggie delight!</p>
+            </div>
+
+      <div class="menu-item">
+  <h2>🍛 Rice Meals</h2>
+
+  <h3>Bagnet Pares</h3>
+  <p>Crispy Ilocano-style bagnet paired with rich beef pares sauce – a crunchy-saucy delight. – ₱99</p>
+
+  <h3>Chicken Fillet w/ Rice</h3>
+  <p>Tender chicken fillet, golden-fried and served with rice – crispy outside, juicy inside. – ₱115</p>
+
+  <h3>Spicy Fish Fillet w/ Rice</h3>
+  <p>Crispy fish fillet tossed in fiery sauce – bold flavors that bite back. – ₱115</p>
+
+  <h3>Spicy Chicken Buffalo w/ Rice</h3>
+  <p>Chicken in zesty buffalo sauce – tangy, spicy, and addictively good. – ₱115</p>
+
+  <h3>Sweet & Sour Pork w/ Rice</h3> 
+  <p>Crispy pork chunks glazed in sweet and tangy sauce — bold, saucy, and satisfying. – ₱115</p>
+
+  <h3>Sweet & Sour Fish w/ Rice</h3>
+  <p>Golden fish fillet glazed in sweet & tangy sauce – a timeless favorite. – ₱115</p>
+
+  <h3>Lechon Paksiw w/ Rice</h3>
+  <p>Slow-cooked lechon in savory vinegar-sugar sauce – tender and bursting with flavor. – ₱115</p>
+
+  <h3>Adobo Rice</h3>
+  <p>Filipino adobo on garlic rice – flavorful, saucy, and satisfying in every bite. – ₱115</p>
+
+  <h3>Buttered Chicken w/ Rice</h3>
+  <p>Crispy chicken pieces tossed in creamy butter sauce – buttery and bold. – ₱115</p>
+
+  <h3>Beef Pares w/ Rice</h3>
+  <p>Savory beef stew with tender chunks and flavorful broth, best with hot rice. – ₱115</p>
+
+  <h3>Bagnet Kare-Kare w/ Rice</h3>
+  <p>Crunchy bagnet on classic peanut Kare-Kare sauce – rich, creamy, and crunchy! – ₱130</p>
+
+  <h3>Fish Fillet w/ Chopsuey & Rice</h3>
+  <p>Crispy fish served with stir-fried veggies – a balanced and satisfying plate. – ₱130</p>
+
+  <h3>Lechon Kawali w/ Chopsuey & Rice</h3>
+  <p>Crunchy pork belly with sautéed mixed veggies – crispy meets healthy. – ₱130</p>
+  </div>
+
+  <div class="menu-item">
+ <h2>🍲 Merienda Meals</h2>
+<h4>Plain Lugaw - ₱20</h4>
+<h4>Lugaw w/ Tokwa - ₱35</h4>
+<h4>Lugaw w/ Egg - ₱35</h4>
+<h4>Lugaw w/ Lumpia - ₱40</h4>
+<h4>Goto - ₱70</h4>
+<h4>Beef Mami - ₱70</h4>
+
+<h2>🍲 Short Order Meals @ ₱140</h2>
+<h4>Canton</h4>
+<h4>Bihon</h4>
+<h4>Canton-Bihon</h4>
+<h4>Miki-Bihon</h4>
+<h4>Chami</h4>
+<h4>Lo-Bihon</h4>
+<h4>Lomi</h4>
+<h4>Lomi sa Mami</h4>
+
+<h2>🍲 Group Meals @ ₱399 (Good for 4 to 5 persons)</h2>
+<h4>Pork Binagoongan</h4>
+<h4>Pakbet W/Bagnet</h4>
+<h4>Chicken Pastel W/Egg</h4>
+<h4>Beef Pochero</h4>
+<h4>Beef Estofado</h4>
+<h4>Buttered Chicken</h4>
+<h4>Lechon Kawali</h4>
+
+ <h2>lauriat Meals @ ₱160</h2>
+       <h3>Sweet & Sour Fish or Pork Lauriat</h3>
+       <h3>Chopsuey Lauriat</h3>
+       <h3>Chicken W/ Fish Fillet Lauriat</h3>
+       <h3>Liempo W/ Fish Fillet Lauriat</h3>
+
+</div>
+
+
+  
+
+  <div class="menu-item">
+
+        <h2>Silog Meals</h2>
+      <h3>Silog</h3>
+      <p>Served with garlic rice and egg – ₱35</p>
+      <h3>Tuyo Silog</h3>
+      <p>Dried salted fish (Tuyo) served crispy with rice and fried egg — a Filipino favorite. – ₱65</p>
+      <h3>Hotsilog</h3>
+      <p>Juicy Filipino-style hotdog with garlic rice and a sunny-side egg. – ₱80</p>
+      <h3>Embosilog</h3>
+      <p>Embotido (Filipino meatloaf) paired with flavorful garlic rice and egg. – ₱80</p>
+      <h3>Spamsilog</h3>
+      <p>Fried Spam slices served with rice and egg — a simple yet satisfying meal. – ₱90</p>
+      <h3>Fish Fillet Silog</h3>
+      <p>Crispy fried fish fillet, perfectly paired with garlic rice and a fried egg. – ₱95</p>
+      <h3>Chicksilog</h3>
+      <p>Fried or grilled chicken strips served with silog-style rice and egg. – ₱95</p>
+      <h3>Lechon Kawali Silog</h3>
+      <p>Crispy deep-fried pork belly(lechon kawali) with garlic rice and egg crunchy and savory! – ₱95</p>
+      <h3>Bangsilog</h3>
+      <p>Fried milkfish (Bangus) with egg and garlicky rice — a hearty, healthy option. – ₱95</p>
+      <h3>Tocilog</h3>
+      <p>Sweet cured pork (Tocino), fried egg, and garlic rice — a Filipino breakfast classic. – ₱95</p>
+      <h3>Tapsilog</h3>
+      <p>Tender beef tapa, fried egg, and rice — the most iconic silog combination. – ₱95</p>     
+        
+
+    </div>
+
+  
+
+    </div>
+  </div>
+
+  <!-- Restaurant Info -->
+  <div class="info">
+    <div>
+      <h3>VISIT US</h3>
+      <p>JXX4+QV4, Lapu-Lapu Ave, Navotas, Metro Manila</p>
+    </div>
+    <div>
+      <h3>HOURS</h3>
+      <p>Open 24/7 – Dine in & Takeout</p>
+    </div>
+    <div>
+      <h3>CONTACT US</h3>
+      <p>0961 719 4188</p>
+      <a href="#">@JofrezFoodHouse</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    &copy; 2025 Jofrez Food House. All rights reserved.
+  </div>
+
+  <!-- JS: Menu toggle -->
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById("navLinks");
+      nav.classList.toggle("show");
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+
+
